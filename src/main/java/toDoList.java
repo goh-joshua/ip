@@ -8,13 +8,15 @@ public class toDoList {
 
     }
 
-    public void addTask(String task) {
-        tasks.add(new Task(task));
-        System.out.println("added: " + task);
+    public void addTask(Task task) {
+        tasks.add(task);
+        System.out.println("added: ");
+        System.out.println(task);
+        System.out.println("Burh, you have " + tasks.size() + " tasks now!");
     }
 
     public void completeTask(int i) {
-        if (i >= 1 && i < tasks.size()) {
+        if (i >= 1 && i <= tasks.size()) {
             tasks.get(i - 1).complete();
             System.out.println("Bokay, you have done this task 👍");
             System.out.println("    " + tasks.get(i - 1));
@@ -22,7 +24,7 @@ public class toDoList {
     }
 
     public void uncompleteTask(int i) {
-        if (i >= 1 && i < tasks.size()) {
+        if (i >= 1 && i <= tasks.size()) {
             tasks.get(i - 1).uncomplete();
             System.out.println("Burh, seriously?");
             System.out.println("    " + tasks.get(i - 1));
