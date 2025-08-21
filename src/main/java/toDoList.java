@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 
 public class toDoList {
-    private ArrayList<String> tasks = new ArrayList<>();
-    private ArrayList<Boolean> completed = new ArrayList<>();
+    private ArrayList<Task> tasks = new ArrayList<>();
 
     // Initializer
     public toDoList() {
@@ -10,36 +9,30 @@ public class toDoList {
     }
 
     public void addTask(String task) {
-        tasks.add(task);
-        completed.add(false);
+        tasks.add(new Task(task));
         System.out.println("added: " + task);
     }
 
     public void completeTask(int i) {
-        if (i >= 1 && i < completed.size()) {
-            completed.set(i - 1, true);
+        if (i >= 1 && i < tasks.size()) {
+            tasks.get(i - 1).complete();
             System.out.println("Bokay, you have done this task 👍");
-            System.out.println("    [❌] " + tasks.get(i-1));
+            System.out.println("    " + tasks.get(i - 1));
         }
     }
 
     public void uncompleteTask(int i) {
-        if (i >= 1 && i < completed.size()) {
-            completed.set(i - 1, false);
+        if (i >= 1 && i < tasks.size()) {
+            tasks.get(i - 1).uncomplete();
             System.out.println("Burh, seriously?");
-            System.out.println("    [  ] " + tasks.get(i-1));
+            System.out.println("    " + tasks.get(i - 1));
         }
     }
 
     public void orderedPrint() {
         String done;
         for (int i = 0; i < this.tasks.size(); i++) {
-            if (this.completed.get(i)) {
-                done = "❌";
-            } else {
-                done = "  ";
-            }
-            System.out.println((i + 1) + ". [" + done + "] " + this.tasks.get(i));
+            System.out.println((i + 1) + ". " + this.tasks.get(i));
         }
     }
 
