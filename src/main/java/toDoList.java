@@ -15,6 +15,12 @@ public class toDoList {
         System.out.println("Burh, you have " + tasks.size() + " tasks now!");
     }
 
+    public void deleteTask(int i) {
+        System.out.println("Goodbye! " + tasks.get(i - 1));
+        tasks.remove(i - 1);
+        System.out.println("Burh, you have " + tasks.size() + " tasks now!");
+    }
+
     public void completeTask(int i) {
         if (i >= 1 && i <= tasks.size()) {
             tasks.get(i - 1).complete();

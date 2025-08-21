@@ -37,7 +37,7 @@ public class Burh {
                             int index = Integer.parseInt(command[1]);
                             tdl.completeTask(index);
                         } catch (NumberFormatException e) {
-                            System.out.println("Invalid number");
+                            throw new BurhException("Burh..., give a proper index...");
                         }
 
                     } else if (command[0].equals("unmark")) {
@@ -45,9 +45,15 @@ public class Burh {
                             int index = Integer.parseInt(command[1]);
                             tdl.uncompleteTask(index);
                         } catch (NumberFormatException e) {
-                            System.out.println("Invalid number");
+                            throw new BurhException("Burh..., give a proper index...");
                         }
-
+                    } else if (command[0].equals("delete")) {
+                        try {
+                            int index = Integer.parseInt(command[1]);
+                            tdl.deleteTask(index);
+                        } catch (NumberFormatException e) {
+                            throw new BurhException("Burh..., give a proper index...");
+                        }
                     } else if (command[0].equals("todo")) {
                         if (command.length == 1) {
                             throw new BurhException("Burh, what do u want to do?!?!");
