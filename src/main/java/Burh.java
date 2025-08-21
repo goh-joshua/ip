@@ -1,12 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class Burh {
-    /**
-     * Function to print lines
-     */
+    // To store the history of the user's input
+    static ArrayList<String> history = new ArrayList<>();
+
+    // Function to print lines
     public static void printLines() {
         System.out.println("_-".repeat(20));
+    }
+
+    // Function to print an indexed list
+    public static void orderedPrint(ArrayList<?> array) {
+        for (int i = 0; i < array.size(); i++) {
+            System.out.println((i + 1) + ". " + array.get(i));
+        }
     }
 
     public static void main(String[] args) {
@@ -20,14 +30,18 @@ public class Burh {
         printLines();
 
         while (!stop) {
-            //Gets user input
+            // Gets user input
             String input = scanner.nextLine();
-
             if (input.equals("bye")) {
+                // Ends the loop
                 stop = true;
                 System.out.println("Burh, goodbye!");
+            } else if (input.equals("list")) {
+                // Prints the history
+                orderedPrint(history);
             } else {
-                System.out.println(input);
+                System.out.println("added: " + input);
+                history.add(input);
             }
             printLines();
         }
