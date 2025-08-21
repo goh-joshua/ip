@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Burh {
     // To store the history of the user's input
     static ArrayList<String> history = new ArrayList<>();
+    static ArrayList<>
 
     // Function to print lines
     public static void printLines() {
