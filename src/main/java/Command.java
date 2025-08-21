@@ -1,9 +1,11 @@
-public enum Commands {
+public enum Command {
     TODO,
     DEADLINE,
     EVENT,
     LIST,
     BYE,
     MARK,
-    UNMARK
+    UNMARK,
+    DELETE,
+    ADD
 }

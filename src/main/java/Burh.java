@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -21,62 +22,81 @@ public class Burh {
             try {
                 // Gets user input
                 String input = scanner.nextLine();
-                if (input.equals("bye")) {
-                    stop = true; // Ends the loop
-                    System.out.println("Burh, goodbye!");
+                String[] command = input.split("\\s+"); // Splits the input
+                try {
+                    Command c = Command.valueOf(command[0].toUpperCase());
+                    switch (c) {
 
-                } else if (input.equals("list")) {
-                    tdl.orderedPrint();
-
-                } else {
-
-                    String[] command = input.split("\\s+"); // Splits the input
-
-                    if (command[0].equals("mark")) {
-                        try {
-                            int index = Integer.parseInt(command[1]);
-                            tdl.completeTask(index);
-                        } catch (NumberFormatException e) {
-                            throw new BurhException("Burh..., give a proper index...");
+                        case BYE: {
+                            stop = true; // Ends the loop
+                            System.out.println("Burh, goodbye!");
+                            break;
                         }
 
-                    } else if (command[0].equals("unmark")) {
-                        try {
-                            int index = Integer.parseInt(command[1]);
-                            tdl.uncompleteTask(index);
-                        } catch (NumberFormatException e) {
-                            throw new BurhException("Burh..., give a proper index...");
+                        case LIST: {
+                            tdl.orderedPrint();
+                            break;
                         }
-                    } else if (command[0].equals("delete")) {
-                        try {
-                            int index = Integer.parseInt(command[1]);
-                            tdl.deleteTask(index);
-                        } catch (NumberFormatException e) {
-                            throw new BurhException("Burh..., give a proper index...");
+
+                        case MARK: {
+                            try {
+                                int index = Integer.parseInt(command[1]);
+                                tdl.completeTask(index);
+                            } catch (NumberFormatException e) {
+                                throw new BurhException("Burh..., give a proper index...");
+                            }
+                            break;
                         }
-                    } else if (command[0].equals("todo")) {
-                        if (command.length == 1) {
-                            throw new BurhException("Burh, what do u want to do?!?!");
-                        } else {
-                            Task task = new Todo(input.replaceFirst("todo ", ""));
+
+                        case UNMARK: {
+                            try {
+                                int index = Integer.parseInt(command[1]);
+                                tdl.uncompleteTask(index);
+                            } catch (NumberFormatException e) {
+                                throw new BurhException("Burh..., give a proper index...");
+                            }
+                            break;
+                        }
+
+                        case DELETE: {
+                            try {
+                                int index = Integer.parseInt(command[1]);
+                                tdl.deleteTask(index);
+                            } catch (NumberFormatException e) {
+                                throw new BurhException("Burh..., give a proper index...");
+                            }
+                            break;
+                        }
+
+                        case TODO: {
+                            if (command.length == 1) {
+                                throw new BurhException("Burh, what do u want to do?!?!");
+                            } else {
+                                Task task = new Todo(input.replaceFirst("todo ", ""));
+                                tdl.addTask(task);
+                            }
+                            break;
+                        }
+
+                        case DEADLINE: {
+                            String[] parts = input.split("/");
+                            Task task = new Deadline(parts[0].replaceFirst("deadline ", ""),
+                                    parts[1].replaceFirst("by ", ""));
                             tdl.addTask(task);
+                            break;
                         }
 
-                    } else if (command[0].equals("deadline")) {
-                        String[] parts = input.split("/");
-                        Task task = new Deadline(parts[0].replaceFirst("deadline ", ""),
-                                parts[1].replaceFirst("by ", ""));
-                        tdl.addTask(task);
-
-                    } else if (command[0].equals("event")) {
-                        String[] parts = input.split("/");
-                        Task task = new Event(parts[0].replaceFirst("event ", ""),
-                                parts[1].replaceFirst("from ", ""),
-                                parts[2].replaceFirst("to ", ""));
-                        tdl.addTask(task);
-                    } else {
-                        throw new BurhException("Burh, I have not idea what you are saying...");
+                        case EVENT: {
+                            String[] parts = input.split("/");
+                            Task task = new Event(parts[0].replaceFirst("event ", ""),
+                                    parts[1].replaceFirst("from ", ""),
+                                    parts[2].replaceFirst("to ", ""));
+                            tdl.addTask(task);
+                            break;
+                        }
                     }
+                } catch (IllegalArgumentException e) {
+                    throw new BurhException("I do not understand your command");
                 }
             } catch (BurhException e) {
                 System.out.println(" " + e.getMessage());
