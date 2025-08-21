@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -49,12 +46,24 @@ public class Burh {
                         System.out.println("Invalid number");
                     }
 
-                } else {
-                    tdl.addTask(input); // Assume it is a task and adds it
+                } else if (command[0].equals("todo")) {
+                    Task task = new Todo(input.replaceFirst("todo ", ""));
+                    tdl.addTask(task);
+
+                } else if (command[0].equals("deadline")) {
+                    String[] parts =  input.split("/");
+                    Task task = new Deadline(parts[0].replaceFirst("deadline ", ""),
+                                                parts[1].replaceFirst("by ", ""));
+                    tdl.addTask(task);
+
+                } else if (command[0].equals("event")) {
+                    String[] parts =  input.split("/");
+                    Task task = new Event(parts[0].replaceFirst("event ", ""),
+                            parts[1].replaceFirst("from ", ""),
+                            parts[2].replaceFirst("to ", ""));
+                    tdl.addTask(task);
                 }
-            } else {
-                tdl.addTask(input);
-            }
+            } 
             printLines();
         }
     }
