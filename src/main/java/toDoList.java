@@ -12,6 +12,7 @@ public class toDoList {
     public void addTask(String task) {
         tasks.add(task);
         completed.add(false);
+        System.out.println("added: " + task);
     }
 
     public void completeTask(int i) {
