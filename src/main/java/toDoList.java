@@ -10,7 +10,7 @@ public class toDoList {
 
     public void addTask(Task task) {
         tasks.add(task);
-        System.out.println("added: ");
+        System.out.println("added:");
         System.out.println(task);
         System.out.println("Burh, you have " + tasks.size() + " tasks now!");
     }

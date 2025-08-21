@@ -63,7 +63,7 @@ public class Burh {
                             parts[2].replaceFirst("to ", ""));
                     tdl.addTask(task);
                 }
-            } 
+            }
             printLines();
         }
     }
