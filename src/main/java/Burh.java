@@ -1,30 +1,20 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Burh {
-    // To store the history of the user's input
-    static ArrayList<String> history = new ArrayList<>();
-    static ArrayList<>
 
     // Function to print lines
     public static void printLines() {
         System.out.println("_-".repeat(20));
     }
 
-    // Function to print an indexed list
-    public static void orderedPrint(ArrayList<?> array) {
-        for (int i = 0; i < array.size(); i++) {
-            System.out.println((i + 1) + ". " + array.get(i));
-        }
-    }
-
     public static void main(String[] args) {
-        // Creates a scanner to detect user input in order to reply
-        Scanner scanner = new Scanner(System.in);
-        // To help detect when to end to program
-        boolean stop = false;
+        Scanner scanner = new Scanner(System.in); // Creates a scanner to detect user input
+        toDoList tdl = new toDoList();
+        boolean stop = false; // To help detect when to end to program
 
         System.out.println("Bello! I'm Burh");
         System.out.println("What can I do for you?");
@@ -34,15 +24,36 @@ public class Burh {
             // Gets user input
             String input = scanner.nextLine();
             if (input.equals("bye")) {
-                // Ends the loop
-                stop = true;
+                stop = true; // Ends the loop
                 System.out.println("Burh, goodbye!");
+
             } else if (input.equals("list")) {
-                // Prints the history
-                orderedPrint(history);
+                tdl.orderedPrint();
+
+            } else if (input.split("\\s+").length >= 2) { // Checks for possible commands
+                String[] command = input.split("\\s+"); // Splits the input
+
+                if (command[0].equals("mark")) {
+                    try {
+                        int index = Integer.parseInt(command[1]);
+                        tdl.completeTask(index);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number");
+                    }
+
+                } else if (command[0].equals("unmark")) {
+                    try {
+                        int index = Integer.parseInt(command[1]);
+                        tdl.uncompleteTask(index);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number");
+                    }
+
+                } else {
+                    tdl.addTask(input); // Assume it is a task and adds it
+                }
             } else {
-                System.out.println("added: " + input);
-                history.add(input);
+                tdl.addTask(input);
             }
             printLines();
         }
