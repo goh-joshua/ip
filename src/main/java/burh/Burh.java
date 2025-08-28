@@ -1,6 +1,6 @@
+package burh;
 import java.io.IOException;
-import java.nio.file.*;
-import java.util.*;
+
 
 public class Burh {
     private Storage storage;

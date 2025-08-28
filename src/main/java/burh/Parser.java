@@ -1,3 +1,4 @@
+package burh;
 public class Parser {
 
     public static Command getCommand(String s) {

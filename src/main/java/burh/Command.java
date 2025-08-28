@@ -1,3 +1,4 @@
+package burh;
 public enum Command {
     TODO,
     DEADLINE,

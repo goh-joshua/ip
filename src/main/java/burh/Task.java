@@ -1,4 +1,4 @@
-
+package burh;
 public class Task {
     private String taskString;
     private boolean completed = false;
