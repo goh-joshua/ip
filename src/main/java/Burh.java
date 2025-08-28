@@ -1,5 +1,6 @@
-import java.util.Locale;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
 
 
 public class Burh {
@@ -30,6 +31,11 @@ public class Burh {
                         case BYE: {
                             stop = true; // Ends the loop
                             System.out.println("Burh, goodbye!");
+                            // Creates save folder and save data
+                            Path folder = Paths.get("data");
+                            Files.createDirectory(folder);
+                            List<String> l = List.of("test", "testt");
+                            Files.write(folder.resolve("test.txt"), l, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                             break;
                         }
 
@@ -97,6 +103,8 @@ public class Burh {
                     }
                 } catch (IllegalArgumentException e) {
                     throw new BurhException("I do not understand your command");
+                } catch (IOException e) {
+                   e.printStackTrace();
                 }
             } catch (BurhException e) {
                 System.out.println(" " + e.getMessage());
