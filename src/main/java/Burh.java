@@ -123,18 +123,19 @@ public class Burh {
                         }
 
                         case DEADLINE: {
-                            String[] parts = input.split(" /");
+                            String[] parts = input.split(" /by ");
                             Task task = new Deadline(parts[0].replaceFirst("deadline ", ""),
-                                    parts[1].replaceFirst("by ", ""));
+                                    parts[1]);
                             tdl.addTask(task);
                             break;
                         }
 
                         case EVENT: {
-                            String[] parts = input.split(" /");
-                            Task task = new Event(parts[0].replaceFirst("event ", ""),
-                                    parts[1].replaceFirst("from ", ""),
-                                    parts[2].replaceFirst("to ", ""));
+                            String[] parts1 = input.split(" /from ");
+                            String[] parts2 = parts1[1].split(" /to ");
+                            Task task = new Event(parts1[0].replaceFirst("event ", ""),
+                                    parts2[0],
+                                    parts2[1]);
                             tdl.addTask(task);
                             break;
                         }
