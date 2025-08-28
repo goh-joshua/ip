@@ -1,3 +1,4 @@
+
 public class Event extends Task {
     private String To;
     private String From;
@@ -11,5 +12,10 @@ public class Event extends Task {
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + From + " to: " + To + ")";
+    }
+
+    @Override
+    public String getSaveString() {
+        return "E|" + super.getSaveString() + super.getTaskString() + "|" + From + "|" + To;
     }
 }

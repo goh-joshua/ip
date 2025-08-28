@@ -1,3 +1,4 @@
+
 public class Deadline extends Task{
     private String dueDate;
 
@@ -8,6 +9,10 @@ public class Deadline extends Task{
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by:" + dueDate +")";
+        return "[D]" + super.toString() + " (by: " + dueDate +")";
+    }
+    @Override
+    public String getSaveString() {
+        return "D|" + super.getSaveString() + super.getTaskString() + "|" + dueDate;
     }
 }

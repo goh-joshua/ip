@@ -1,0 +1,3 @@
+T|F|a
+D|F|a|a
+E|F|a|a|a
