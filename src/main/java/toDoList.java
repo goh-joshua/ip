@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class toDoList {
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -15,6 +15,10 @@ public class toDoList {
         System.out.println("Burh, you have " + tasks.size() + " tasks now!");
     }
 
+    public void addTaskQuiet(Task task) {
+        tasks.add(task);
+    }
+
     public void deleteTask(int i) {
         System.out.println("Goodbye! " + tasks.get(i - 1));
         tasks.remove(i - 1);
@@ -29,6 +33,10 @@ public class toDoList {
         }
     }
 
+    public void completeMostRecent() {
+        tasks.get(tasks.size() - 1).complete();
+    }
+
     public void uncompleteTask(int i) {
         if (i >= 1 && i <= tasks.size()) {
             tasks.get(i - 1).uncomplete();
@@ -38,10 +46,17 @@ public class toDoList {
     }
 
     public void orderedPrint() {
-        String done;
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.println((i + 1) + ". " + this.tasks.get(i));
         }
+    }
+
+    public List<String> getStringList() {
+        List<String> l = new ArrayList<>();
+        for (int i = 0; i < this.tasks.size(); i++) {
+            l.add((i + 1) + ". " + this.tasks.get(i));
+        }
+        return l;
     }
 
 }
