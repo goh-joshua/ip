@@ -1,10 +1,10 @@
 import java.util.*;
 
-public class toDoList {
+public class TaskList {
     private ArrayList<Task> tasks = new ArrayList<>();
 
     // Initializer
-    public toDoList() {
+    public TaskList() {
 
     }
 
@@ -20,9 +20,13 @@ public class toDoList {
     }
 
     public void deleteTask(int i) {
-        System.out.println("Goodbye! " + tasks.get(i - 1));
-        tasks.remove(i - 1);
-        System.out.println("Burh, you have " + tasks.size() + " tasks now!");
+        try {
+            System.out.println("Goodbye! " + tasks.get(i - 1));
+            tasks.remove(i - 1);
+            System.out.println("Burh, you have " + tasks.size() + " tasks now!");
+        } catch (IndexOutOfBoundsException e) {
+            throw new BurhException("Invalid index");
+        }
     }
 
     public void completeTask(int i) {
