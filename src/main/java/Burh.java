@@ -1,7 +1,8 @@
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Burh {
     private static Path folder = Paths.get("data");
@@ -17,13 +18,12 @@ public class Burh {
         try {
             List<String> save_data = Files.readAllLines(folder.resolve("test.txt"));
             for (String l : save_data) {
-                String[] parts = l.split("\\[");
-                char type = parts[1].charAt(0);
-                boolean marked = parts[2].charAt(0) != ' ';
-                String task;
+                String[] parts = l.split("\\|");
+                char type = parts[0].charAt(0);
+                boolean marked = parts[1].charAt(0) == 'T';
+                String task = parts[2];
                 switch (type) {
                     case 'T': {
-                        task = parts[2].split("] ")[1];
                         tdl.addTaskQuiet(new Todo(task));
                         if (marked) {
                             tdl.completeMostRecent();
@@ -31,22 +31,14 @@ public class Burh {
                         break;
                     }
                     case 'D': {
-                        String[] vars = parts[2].split("] ")[1].split(" \\(");
-                        task = vars[0];
-                        String by = vars[1].substring(3, vars[1].length() - 1);
-                        tdl.addTaskQuiet(new Deadline(task, by));
+                        tdl.addTaskQuiet(new Deadline(task, parts[3]));
                         if (marked) {
                             tdl.completeMostRecent();
                         }
                         break;
                     }
                     case 'E': {
-                        String[] vars = parts[2].split("] ")[1].split(" \\(");
-                        task = vars[0];
-                        vars = vars[1].split("from: ")[1].split(" to: ");
-                        String from = vars[0];
-                        String to = vars[1].substring(0, vars[1].length() - 1);
-                        tdl.addTaskQuiet(new Event(task, from, to));
+                        tdl.addTaskQuiet(new Event(task, parts[3], parts[4]));
                         if (marked) {
                             tdl.completeMostRecent();
                         }
@@ -131,18 +123,19 @@ public class Burh {
                         }
 
                         case DEADLINE: {
-                            String[] parts = input.split("/");
+                            String[] parts = input.split(" /by ");
                             Task task = new Deadline(parts[0].replaceFirst("deadline ", ""),
-                                    parts[1].replaceFirst("by ", ""));
+                                    parts[1]);
                             tdl.addTask(task);
                             break;
                         }
 
                         case EVENT: {
-                            String[] parts = input.split(" /");
-                            Task task = new Event(parts[0].replaceFirst("event ", ""),
-                                    parts[1].replaceFirst("from ", ""),
-                                    parts[2].replaceFirst("to ", ""));
+                            String[] parts1 = input.split(" /from ");
+                            String[] parts2 = parts1[1].split(" /to ");
+                            Task task = new Event(parts1[0].replaceFirst("event ", ""),
+                                    parts2[0],
+                                    parts2[1]);
                             tdl.addTask(task);
                             break;
                         }

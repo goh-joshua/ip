@@ -53,8 +53,8 @@ public class toDoList {
 
     public List<String> getStringList() {
         List<String> l = new ArrayList<>();
-        for (int i = 0; i < this.tasks.size(); i++) {
-            l.add((i + 1) + ". " + this.tasks.get(i));
+        for (Task t : this.tasks) {
+            l.add(t.getSaveString());
         }
         return l;
     }

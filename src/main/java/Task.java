@@ -1,3 +1,4 @@
+
 public class Task {
     private String taskString;
     private boolean completed = false;
@@ -24,4 +25,13 @@ public class Task {
         }
         return "[" + done + "] " + this.taskString;
     }
+
+    public String getTaskString() {
+        return this.taskString;
+    }
+
+    public String getSaveString() {
+        return (completed) ? "T|" : "F|";
+    }
+
 }
