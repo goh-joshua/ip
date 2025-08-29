@@ -84,6 +84,10 @@ public class Burh {
                         Task eventTask = Parser.parseEventTask(input);
                         tasks.addTask(eventTask);
                         break;
+
+                    case FIND:
+                        tasks.findKeywordInTasks(Parser.parseKeyword(input));
+                        break;
                 }
             } catch (BurhException e) {
                 ui.showError(e.getMessage());
