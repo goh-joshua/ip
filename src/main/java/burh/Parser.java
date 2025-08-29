@@ -1,6 +1,17 @@
 package burh;
+
+/**
+ * Parses user input strings into commands or task objects.
+ */
 public class Parser {
 
+    /**
+     * Returns the Command corresponding to the first word of the input.
+     *
+     * @param s User input string.
+     * @return The parsed Command enum.
+     * @throws BurhException If the command is not recognized.
+     */
     public static Command getCommand(String s) {
         try {
             return Command.valueOf(s.split(" ")[0].toUpperCase());
@@ -9,6 +20,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns an integer representing the index of a task in the task list.
+     *
+     * @param fullCommand Full user command starting with "mark" or "unmark".
+     * @return An integer.
+     * @throws BurhException If parsing fails.
+     */
     public static int parseIndex(String fullCommand) throws BurhException {
         String[] commandParts = fullCommand.split("\\s+");
 
@@ -23,11 +41,25 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns a Todo task parsed from the full command string.
+     *
+     * @param fullCommand Full user command starting with "todo".
+     * @return A Todo task object.
+     * @throws BurhException If parsing fails.
+     */
     public static Task parseTodoTask(String fullCommand) throws BurhException {
 
         return new Todo(fullCommand.replaceFirst("todo ", ""));
     }
 
+    /**
+     * Returns a Deadline task parsed from the full command string.
+     *
+     * @param fullCommand Full user command starting with "deadline" and containing "/by".
+     * @return A Deadline task object.
+     * @throws BurhException If parsing fails.
+     */
     public static Task parseDeadlineTask(String fullCommand) throws BurhException {
         String[] parts = fullCommand.split(" /by ");
 
@@ -38,6 +70,13 @@ public class Parser {
         return new Deadline(parts[0].replaceFirst("deadline ", ""), parts[1]);
     }
 
+    /**
+     * Returns a Event task parsed from the full command string.
+     *
+     * @param fullCommand Full user command starting with "event", containing "/from" and "/to".
+     * @return A Event task object.
+     * @throws BurhException If parsing fails.
+     */
     public static Task parseEventTask(String fullCommand) throws BurhException {
         String[] parts1 = fullCommand.split(" /from ");
 

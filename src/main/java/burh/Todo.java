@@ -1,6 +1,15 @@
 package burh;
+
+/**
+ * Represents a todo task with a description.
+ */
 public class Todo extends Task{
 
+    /**
+     * Creates an event task with the given description, start date and end date.
+     *
+     * @param task Description of the event task.
+     */
     public Todo(String task) {
         super(task);
     }

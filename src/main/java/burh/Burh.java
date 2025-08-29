@@ -1,12 +1,21 @@
 package burh;
 import java.io.IOException;
 
-
+/**
+ * Entry point of the Burh chatbot.
+ * Handles initialization of storage, tasks, and user interface,
+ * and runs the main event loop to process commands.
+ */
 public class Burh {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a Burh instance with the given file path.
+     *
+     * @param filePath Path to the file used for saving and loading tasks.
+     */
     public Burh(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -18,9 +27,12 @@ public class Burh {
         }
     }
 
+    /**
+     * Runs the main program loop.
+     * Reads user input, interprets and executes commands until user ends.
+     */
     public void run() {
         ui.showWelcome();
-
         boolean stop = false;
         while (!stop) {
             try {
