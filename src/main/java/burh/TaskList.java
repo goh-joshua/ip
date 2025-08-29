@@ -64,4 +64,21 @@ public class TaskList {
         return l;
     }
 
+    /**
+     * Searches the task list for tasks containing the given keyword,
+     * creates a TaskList that contains them and then
+     * prints them orderly.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     */
+    public void findKeywordInTasks(String keyword) {
+        TaskList l = new TaskList();
+        for (Task t : this.tasks) {
+            if (t.getTaskString().contains(keyword)) {
+                l.addTaskQuiet(t);
+            }
+        }
+        l.orderedPrint();
+    }
+
 }

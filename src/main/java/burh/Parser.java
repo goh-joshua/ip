@@ -54,5 +54,22 @@ public class Parser {
         return new Event(parts1[0].replaceFirst("event ", ""), parts2[0], parts2[1]);
     }
 
+    /**
+     * Parses a find command and returns the keyword the user wants to find.
+     *
+     * @param fullCommand the full command string entered by the user starting with "find".
+     * @return a String of the keyword.
+     * @throws BurhException if the command format is invalid
+     */
+    public static String parseKeyword(String fullCommand) throws BurhException {
+        String[] parts = fullCommand.split(" ");
+
+        if (parts.length != 2) {
+            throw new BurhException("Burh. Enter 1 keyword. ");
+        }
+
+        return parts[1];
+    }
+
 
 }
