@@ -1,4 +1,5 @@
 package burh;
+
 import java.util.Scanner;
 
 /**
