@@ -16,19 +16,22 @@ public class Ui {
     }
 
     /**
-     * Displays the welcome message to the user.
+     * Return the welcome message to the user.
+     *
+     * @return Welcome string.
      */
-    public void showWelcome() {
-        System.out.println("Bello! I'm Burh");
-        System.out.println("What can I do for you?");
-        printLines();
+    public String showWelcome() {
+        return "Bello! I'm Burh"
+        + "\nWhat can I do for you?";
     }
 
     /**
-     * Displays the goodbye message to the user.
+     * Return the goodbye message to the user.
+     *
+     * @return Goodbye string.
      */
-    public void showGoodbye() {
-        System.out.println("Burh, goodbye!");
+    public String showGoodbye() {
+        return "Burh, goodbye!";
     }
 
     /**

@@ -27,77 +27,67 @@ public class Burh {
         }
     }
 
+    public String getWelcomeString() {
+        return ui.showWelcome();
+    }
+
     /**
-     * Runs the main program loop.
-     * Reads user input, interprets and executes commands until user ends.
+     * Generates a response for the user's chat message.
+     *
+     * @return String of correct output after user inputs.
      */
-    public void run() {
-        ui.showWelcome();
-        boolean stop = false;
-        while (!stop) {
-            try {
-                String input = ui.readCommand();
-                Command command = Parser.getCommand(input);
+    public String getResponse(String input) {
+        try {
+            Command command = Parser.getCommand(input);
+            switch (command) {
+                case BYE:
+                    // Save data before exiting
+                    try {
+                        storage.save(tasks.getStringList());
+                    } catch (IOException e) {
+                        ui.showError("Error saving data: " + e.getMessage());
+                    }
+                    return ui.showGoodbye();
 
-                switch (command) {
-                    case BYE:
-                        stop = true;
-                        ui.showGoodbye();
-                        // Save data before exiting
-                        try {
-                            storage.save(tasks.getStringList());
-                        } catch (IOException e) {
-                            ui.showError("Error saving data: " + e.getMessage());
-                        }
-                        break;
+                case LIST:
+                    return tasks.orderedPrint();
 
-                    case LIST:
-                        tasks.orderedPrint();
-                        break;
+                case MARK:
+                    int markIndex = Parser.parseIndex(input);
+                    return tasks.completeTask(markIndex);
 
-                    case MARK:
-                        int markIndex = Parser.parseIndex(input);
-                        tasks.completeTask(markIndex);
-                        break;
+                case UNMARK:
+                    int unmarkIndex = Parser.parseIndex(input);
+                    return tasks.uncompleteTask(unmarkIndex);
 
-                    case UNMARK:
-                        int unmarkIndex = Parser.parseIndex(input);
-                        tasks.uncompleteTask(unmarkIndex);
-                        break;
+                case DELETE:
+                    int deleteIndex = Parser.parseIndex(input);
+                    return tasks.deleteTask(deleteIndex);
 
-                    case DELETE:
-                        int deleteIndex = Parser.parseIndex(input);
-                        tasks.deleteTask(deleteIndex);
-                        break;
+                case TODO:
+                    Task todoTask = Parser.parseTodoTask(input);
+                    return tasks.addTask(todoTask);
 
-                    case TODO:
-                        Task todoTask = Parser.parseTodoTask(input);
-                        tasks.addTask(todoTask);
-                        break;
+                case DEADLINE:
+                    Task deadlineTask = Parser.parseDeadlineTask(input);
+                    return tasks.addTask(deadlineTask);
 
-                    case DEADLINE:
-                        Task deadlineTask = Parser.parseDeadlineTask(input);
-                        tasks.addTask(deadlineTask);
-                        break;
+                case EVENT:
+                    Task eventTask = Parser.parseEventTask(input);
+                    return tasks.addTask(eventTask);
 
-                    case EVENT:
-                        Task eventTask = Parser.parseEventTask(input);
-                        tasks.addTask(eventTask);
-                        break;
+                case FIND:
+                    return tasks.findKeywordInTasks(Parser.parseKeyword(input));
 
-                    case FIND:
-                        tasks.findKeywordInTasks(Parser.parseKeyword(input));
-                        break;
-                }
-            } catch (BurhException e) {
-                ui.showError(e.getMessage());
+                default:
+                    return "";
             }
-
-            ui.printLines();
+        } catch (BurhException e) {
+            return e.getMessage();
         }
     }
 
     public static void main(String[] args) {
-        new Burh("data/test.txt").run();
+        new Burh("data/test.txt");
     }
 }

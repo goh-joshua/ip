@@ -1,3 +1,1 @@
-T|F|a
-D|T|a|1111-11-11
-T|F|help
+T|F|die

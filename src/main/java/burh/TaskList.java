@@ -19,12 +19,13 @@ public class TaskList {
      * Adds a task to the list and prints confirmation to the user.
      *
      * @param task The task to add.
+     * @return Task addition confimration string
      */
-    public void addTask(Task task) {
+    public String addTask(Task task) {
         tasks.add(task);
-        System.out.println("added:");
-        System.out.println(task);
-        System.out.println("Burh, you have " + tasks.size() + " tasks now!");
+        return ("added:" 
+        + task.toString() + "\n"
+        + "Burh, you have " + tasks.size() + " tasks now!");
     }
 
     /**
@@ -37,16 +38,18 @@ public class TaskList {
     }
 
     /**
-     * Deletes the task at the given index and prints confirmation.
+     * Deletes the task at the given index and returns confirmation string.
      *
      * @param i Index of the task.
      * @throws BurhException If the index is invalid.
+     * @return Task deletion confirmation string.
      */
-    public void deleteTask(int i) {
+    public String deleteTask(int i) {
         try {
-            System.out.println("Goodbye! " + tasks.get(i - 1));
+            String s1 = ("Goodbye! " + tasks.get(i - 1));
             tasks.remove(i - 1);
-            System.out.println("Burh, you have " + tasks.size() + " tasks now!");
+            String s2 = ("Burh, you have " + tasks.size() + " tasks now!");
+            return s1 + "\n" + s2;
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -57,14 +60,13 @@ public class TaskList {
      *
      * @param i Index of the task.
      * @throws BurhException If the index is invalid.
+     * @return Task completion confirmation string.
      */
-    public void completeTask(int i) {
+    public String completeTask(int i) {
         try {
-            if (i >= 1 && i <= tasks.size()) {
-                tasks.get(i - 1).complete();
-                System.out.println("Bokay, you have done this task 👍");
-                System.out.println("    " + tasks.get(i - 1));
-            }
+            tasks.get(i - 1).complete();
+            return "Bokay, you have done this task 👍"
+                    + "    " + tasks.get(i - 1);
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -82,14 +84,13 @@ public class TaskList {
      *
      * @param i Index of the task.
      * @throws BurhException If the index is invalid.
+     * @return Task uncompletion confirmation string.
      */
-    public void uncompleteTask(int i) {
+    public String uncompleteTask(int i) {
         try {
-            if (i >= 1 && i <= tasks.size()) {
-                tasks.get(i - 1).uncomplete();
-                System.out.println("Burh, seriously?");
-                System.out.println("    " + tasks.get(i - 1));
-            }
+            tasks.get(i - 1).uncomplete();
+            return "Burh, seriously?"
+                    + "    " + tasks.get(i - 1);
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -97,11 +98,15 @@ public class TaskList {
 
     /**
      * Prints all tasks in the list in order.
+     *
+     * @return List of all task in string.
      */
-    public void orderedPrint() {
+    public String orderedPrint() {
+        StringBuilder all = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + this.tasks.get(i));
+            all.append(i + 1).append(". ").append(this.tasks.get(i)).append("\n");
         }
+        return all.toString();
     }
 
     /**
@@ -123,15 +128,16 @@ public class TaskList {
      * prints them orderly.
      *
      * @param keyword The keyword to search for in task descriptions.
+     * @return List of tasks contain keyword in a string.
      */
-    public void findKeywordInTasks(String keyword) {
+    public String findKeywordInTasks(String keyword) {
         TaskList l = new TaskList();
         for (Task t : this.tasks) {
             if (t.getTaskString().contains(keyword)) {
                 l.addTaskQuiet(t);
             }
         }
-        l.orderedPrint();
+        return l.orderedPrint();
     }
 
 }
