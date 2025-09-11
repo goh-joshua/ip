@@ -23,4 +23,16 @@ public class Todo extends Task {
     public String getSaveString() {
         return "T|" + super.getSaveString() + super.getDescription();
     }
+
+    @Override
+    public int compareTo(Task t) {
+        if (t instanceof Todo) {
+            return -1;
+        } else if (t instanceof Deadline) {
+            return 1;
+        } else {
+            assert t instanceof Event;
+            return 1;
+        }
+    }
 }

@@ -89,6 +89,10 @@ public class Burh {
                     return tasks.findKeywordInTasks(Parser.parseKeyword(input));
                 }
 
+                case SORT: {
+                    return tasks.sortChrono();
+                }
+
                 default:
                     return "";
             }

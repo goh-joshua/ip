@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Represents a general task with a description and completion status.
  */
-public class Task {
+abstract public class Task implements Comparable<Task> {
     private final String description;
     private boolean isCompleted = false;
     protected static final DateTimeFormatter DISPLAY_FORMAT =
@@ -58,5 +58,8 @@ public class Task {
     public String getSaveString() {
         return (isCompleted) ? "T|" : "F|";
     }
+
+    @Override
+    public abstract int compareTo(Task t);
 
 }

@@ -142,4 +142,15 @@ public class TaskList {
         return results.orderedPrint();
     }
 
+    /**
+     * Sorts the task list based on priority in the task arraylist.
+     *
+     * @return List of tasks in the new sorted list in a string.
+     */
+
+    public String sortChrono() {
+        this.tasks.sort(null);
+        return orderedPrint();
+    }
+
 }

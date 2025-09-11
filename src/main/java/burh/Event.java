@@ -33,4 +33,21 @@ public class Event extends Task {
         return "E|" + super.getSaveString() + super.getDescription() + "|"
                 + fromDate.toString() + "|" + toDate.toString();
     }
+
+    public LocalDate getFromDate() {
+        return this.fromDate;
+    }
+
+    @Override
+    public int compareTo(Task t) {
+        if (t instanceof Todo) {
+            return -1;
+        } else if (t instanceof Deadline d) {
+            return this.fromDate.compareTo(d.getDueDate());
+        } else {
+            assert t instanceof Event;
+            Event e = (Event) t;
+            return this.fromDate.compareTo(e.getFromDate());
+        }
+    }
 }
