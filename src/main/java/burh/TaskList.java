@@ -131,13 +131,11 @@ public class TaskList {
      * @return List of tasks contain keyword in a string.
      */
     public String findKeywordInTasks(String keyword) {
-        TaskList l = new TaskList();
-        for (Task t : this.tasks) {
-            if (t.getTaskString().contains(keyword)) {
-                l.addTaskQuiet(t);
-            }
-        }
-        return l.orderedPrint();
+        TaskList results = new TaskList();
+        this.tasks.stream()
+                .filter(t -> t.getTaskString().contains(keyword))
+                .forEach(results::addTaskQuiet);
+        return results.orderedPrint();
     }
 
 }
