@@ -1,6 +1,5 @@
 package burh;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a deadline task with a description and due date.
@@ -22,10 +21,10 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return "[D]" + super.toString()
-                + " (by: " + dueDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+                + " (by: " + dueDate.format(DISPLAY_FORMAT) + ")";
     }
     @Override
     public String getSaveString() {
-        return "D|" + super.getSaveString() + super.getTaskString() + "|" + dueDate.toString();
+        return "D|" + super.getSaveString() + super.getDescription() + "|" + dueDate.toString();
     }
 }

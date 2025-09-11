@@ -135,13 +135,13 @@ public class TaskList {
      * @return List of tasks contain keyword in a string.
      */
     public String findKeywordInTasks(String keyword) {
-        TaskList l = new TaskList();
+        TaskList results = new TaskList();
         for (Task t : this.tasks) {
-            if (t.getTaskString().contains(keyword)) {
-                l.addTaskQuiet(t);
+            if (t.getDescription().contains(keyword)) {
+                results.addTaskQuiet(t);
             }
         }
-        return l.orderedPrint();
+        return results.orderedPrint();
     }
 
 }
