@@ -1,13 +1,12 @@
 package burh;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an event task with a description, start date and end date.
  */
 public class Event extends Task {
-    private LocalDate toDate;
     private LocalDate fromDate;
+    private LocalDate toDate;
 
     /**
      * Creates an event task with the given description, start date and end date.
@@ -18,20 +17,20 @@ public class Event extends Task {
      */
     public Event(String task, String from, String to) {
         super(task);
-        this.toDate = LocalDate.parse(to);
         this.fromDate = LocalDate.parse(from);
+        this.toDate = LocalDate.parse(to);
     }
 
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: "
-                + fromDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " to: " + toDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+                + fromDate.format(DISPLAY_FORMAT)
+                + " to: " + toDate.format(DISPLAY_FORMAT) + ")";
     }
 
     @Override
     public String getSaveString() {
-        return "E|" + super.getSaveString() + super.getTaskString() + "|"
+        return "E|" + super.getSaveString() + super.getDescription() + "|"
                 + fromDate.toString() + "|" + toDate.toString();
     }
 }

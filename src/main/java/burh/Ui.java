@@ -6,8 +6,8 @@ import java.util.Scanner;
  * Handles all interactions with the user, including input and output.
  */
 public class Ui {
-    private Scanner scanner;
-
+    private final Scanner scanner;
+    private static final String SEPARATOR = "_-".repeat(20);
     /**
      * Creates a Ui instance and initializes the input scanner.
      */
@@ -63,6 +63,6 @@ public class Ui {
      * Prints a decorative line to separate sections of output.
      */
     public void printLines() {
-        System.out.println("_-".repeat(20));
+        System.out.println(SEPARATOR);
     }
 }

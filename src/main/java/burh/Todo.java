@@ -6,9 +6,9 @@ package burh;
 public class Todo extends Task {
 
     /**
-     * Creates an event task with the given description, start date and end date.
+     * Creates an todo task with the given description, start date and end date.
      *
-     * @param task Description of the event task.
+     * @param task Description of the todo task.
      */
     public Todo(String task) {
         super(task);
@@ -21,6 +21,6 @@ public class Todo extends Task {
 
     @Override
     public String getSaveString() {
-        return "T|" + super.getSaveString() + super.getTaskString();
+        return "T|" + super.getSaveString() + super.getDescription();
     }
 }

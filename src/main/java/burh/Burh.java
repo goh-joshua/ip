@@ -7,9 +7,9 @@ import java.io.IOException;
  * and runs the main event loop to process commands.
  */
 public class Burh {
-    private Storage storage;
+    private final Storage storage;
     private TaskList tasks;
-    private Ui ui;
+    private final Ui ui;
 
     /**
      * Creates a Burh instance with the given file path.
@@ -40,7 +40,8 @@ public class Burh {
         try {
             Command command = Parser.getCommand(input);
             switch (command) {
-                case BYE:
+
+                case BYE: {
                     // Save data before exiting
                     try {
                         storage.save(tasks.getStringList());
@@ -48,36 +49,45 @@ public class Burh {
                         ui.showError("Error saving data: " + e.getMessage());
                     }
                     return ui.showGoodbye();
+                }
 
-                case LIST:
+                case LIST: {
                     return tasks.orderedPrint();
+                }
 
-                case MARK:
-                    int markIndex = Parser.parseIndex(input);
-                    return tasks.completeTask(markIndex);
+                case MARK: {
+                    int taskIndex = Parser.parseIndex(input);
+                    return tasks.completeTask(taskIndex);
+                }
 
-                case UNMARK:
-                    int unmarkIndex = Parser.parseIndex(input);
-                    return tasks.uncompleteTask(unmarkIndex);
+                case UNMARK: {
+                    int taskIndex = Parser.parseIndex(input);
+                    return tasks.uncompleteTask(taskIndex);
+                }
 
-                case DELETE:
-                    int deleteIndex = Parser.parseIndex(input);
-                    return tasks.deleteTask(deleteIndex);
+                case DELETE: {
+                    int taskIndex = Parser.parseIndex(input);
+                    return tasks.deleteTask(taskIndex);
+                }
 
-                case TODO:
+                case TODO: {
                     Task todoTask = Parser.parseTodoTask(input);
                     return tasks.addTask(todoTask);
+                }
 
-                case DEADLINE:
+                case DEADLINE: {
                     Task deadlineTask = Parser.parseDeadlineTask(input);
                     return tasks.addTask(deadlineTask);
+                }
 
-                case EVENT:
+                case EVENT: {
                     Task eventTask = Parser.parseEventTask(input);
                     return tasks.addTask(eventTask);
+                }
 
-                case FIND:
+                case FIND: {
                     return tasks.findKeywordInTasks(Parser.parseKeyword(input));
+                }
 
                 default:
                     return "";

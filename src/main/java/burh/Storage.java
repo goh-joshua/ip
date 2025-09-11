@@ -10,7 +10,7 @@ import java.util.List;
  * Handles saving and loading tasks to local storage.
  */
 public class Storage {
-    private Path filePath;
+    private final Path filePath;
 
     /**
      * Creates a Storage instance with the given file path.
