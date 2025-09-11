@@ -137,7 +137,7 @@ public class TaskList {
     public String findKeywordInTasks(String keyword) {
         TaskList results = new TaskList();
         this.tasks.stream()
-                .filter(t -> t.getTaskString().contains(keyword))
+                .filter(t -> t.getDescription().contains(keyword))
                 .forEach(results::addTaskQuiet);
         return results.orderedPrint();
     }

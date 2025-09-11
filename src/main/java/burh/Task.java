@@ -1,11 +1,15 @@
 package burh;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a general task with a description and completion status.
  */
 public class Task {
-    private String taskString;
-    private boolean completed = false;
+    private final String description;
+    private boolean isCompleted = false;
+    protected static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMM d yyyy");
 
     /**
      * Creates a task with the given description.
@@ -13,46 +17,46 @@ public class Task {
      * @param s Description of the task.
      */
     public Task(String s) {
-        this.taskString = s;
+        this.description = s;
     }
 
     /**
      * Marks the task as completed.
      */
     public void complete() {
-        completed = true;
+        isCompleted = true;
     }
 
     /**
      * Marks the task as uncompleted.
      */
     public void uncomplete() {
-        completed = false;
+        isCompleted = false;
     }
 
     @Override
     public String toString() {
         String done;
-        if (completed) {
+        if (isCompleted) {
             done = "❌";
         } else {
             done = "  ";
         }
-        return "[" + done + "] " + this.taskString;
+        return "[" + done + "] " + this.description;
     }
 
     /**
      * Returns the task.
      */
-    public String getTaskString() {
-        return this.taskString;
+    public String getDescription() {
+        return this.description;
     }
 
     /**
      * Returns the task formatted in the save format.
      */
     public String getSaveString() {
-        return (completed) ? "T|" : "F|";
+        return (isCompleted) ? "T|" : "F|";
     }
 
 }
