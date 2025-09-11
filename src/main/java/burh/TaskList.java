@@ -136,11 +136,9 @@ public class TaskList {
      */
     public String findKeywordInTasks(String keyword) {
         TaskList results = new TaskList();
-        for (Task t : this.tasks) {
-            if (t.getDescription().contains(keyword)) {
-                results.addTaskQuiet(t);
-            }
-        }
+        this.tasks.stream()
+                .filter(t -> t.getDescription().contains(keyword))
+                .forEach(results::addTaskQuiet);
         return results.orderedPrint();
     }
 
