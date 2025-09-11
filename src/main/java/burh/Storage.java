@@ -82,7 +82,7 @@ public class Storage {
         if (folder != null && !Files.exists(folder)) {
             Files.createDirectories(folder);
         }
-
+        assert Files.exists(filePath);
         Files.write(filePath, taskStringList, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
 }

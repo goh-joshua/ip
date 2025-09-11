@@ -22,7 +22,10 @@ public class TaskList {
      * @return Task addition confimration string
      */
     public String addTask(Task task) {
+        int initialSize = tasks.size();
         tasks.add(task);
+        int newSize =tasks.size();
+        assert initialSize + 1 == newSize;
         return ("added:" 
         + task.toString() + "\n"
         + "Burh, you have " + tasks.size() + " tasks now!");
@@ -76,6 +79,7 @@ public class TaskList {
      * Completes most recent task.
      */
     public void completeMostRecent() {
+        assert !tasks.isEmpty();
         tasks.get(tasks.size() - 1).complete();
     }
 
