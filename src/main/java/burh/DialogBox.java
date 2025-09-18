@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 public class DialogBox extends HBox {
     @FXML
@@ -35,8 +36,13 @@ public class DialogBox extends HBox {
         // Apply appropriate style class based on sender
         if (isUser) {
             dialog.getStyleClass().add("user-dialog");
+            this.setAlignment(Pos.CENTER_RIGHT);
+            HBox.setHgrow(dialog, Priority.ALWAYS);
+            dialog.setMaxWidth(Double.MAX_VALUE);
+            dialog.setAlignment(Pos.CENTER_RIGHT);
         } else {
             dialog.getStyleClass().add("burh-dialog");
+            this.setAlignment(Pos.CENTER_LEFT);
         }
     }
 
@@ -47,7 +53,7 @@ public class DialogBox extends HBox {
         ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
+        setAlignment(Pos.CENTER_LEFT);
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
