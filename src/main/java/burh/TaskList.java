@@ -131,14 +131,23 @@ public class TaskList {
      * creates a TaskList that contains them and then
      * prints them orderly.
      *
+     * This method uses Java 8's Stream API to filter the tasks by
+     * description and then add them to a new TaskList.
+     * This new TaskList is then printed using the orderedPrint() method.
+     *
      * @param keyword The keyword to search for in task descriptions.
      * @return List of tasks contain keyword in a string.
      */
     public String findKeywordInTasks(String keyword) {
+        // Create a new TaskList to store the filtered tasks
         TaskList results = new TaskList();
+
+        // Filter the tasks by description and add them to the new TaskList
         this.tasks.stream()
                 .filter(t -> t.getDescription().contains(keyword))
                 .forEach(results::addTaskQuiet);
+
+        // Print the filtered tasks
         return results.orderedPrint();
     }
 
