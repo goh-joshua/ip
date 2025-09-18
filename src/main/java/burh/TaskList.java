@@ -24,11 +24,21 @@ public class TaskList {
     public String addTask(Task task) {
         int initialSize = tasks.size();
         tasks.add(task);
-        int newSize =tasks.size();
+        int newSize = tasks.size();
         assert initialSize + 1 == newSize;
-        return ("added:" 
-        + task.toString() + "\n"
-        + "Burh, you have " + tasks.size() + " tasks now!");
+        
+        String[] reactions = {
+            "Burh... fine. Added: " + task.toString() + "\n"
+                    + "Burh, now you have " + tasks.size() + " things to not do.",
+                    
+            "*sigh* Burh, if I must... " + task.toString() + "\n"
+                    + "Burh, that's " + tasks.size() + " tasks now. Not that I care.",
+                    
+            "Burh, really? Another one? " + task.toString() + "\n"
+                    + tasks.size() + " tasks, burh. You're really pushing it."
+        };
+        
+        return reactions[(int)(Math.random() * reactions.length)];
     }
 
     /**
@@ -49,10 +59,21 @@ public class TaskList {
      */
     public String deleteTask(int i) {
         try {
-            String s1 = ("Goodbye! " + tasks.get(i - 1));
+            Task removedTask = tasks.get(i - 1);
             tasks.remove(i - 1);
-            String s2 = ("Burh, you have " + tasks.size() + " tasks now!");
-            return s1 + "\n" + s2;
+            
+            String[] reactions = {
+                "Burh, deleted " + removedTask + 
+                "\n" + tasks.size() + " tasks left, burh. Not that it matters.",
+                
+                "Burh, fine. Removed: " + removedTask + 
+                "\nBurh, down to " + tasks.size() + " tasks. Whatever.",
+                
+                "Burh... *sigh* Deleted " + removedTask + 
+                "\n" + tasks.size() + " tasks remaining, burh. Not that you care."
+            };
+            
+            return reactions[(int)(Math.random() * reactions.length)];
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -68,8 +89,12 @@ public class TaskList {
     public String completeTask(int i) {
         try {
             tasks.get(i - 1).complete();
-            return "Bokay, you have done this task 👍"
-                    + "    " + tasks.get(i - 1);
+            String[] reactions = {
+                "Burh... you actually did something for once.\n" + "    " + tasks.get(i - 1) + "\nBurh, I'm shocked.",
+                "*checks watch* Burh, took you long enough.\n" + "    " + tasks.get(i - 1) + "\nBurh, what's next?",
+                "Burh... a completed task. You want a medal or something?\n" + "    " + tasks.get(i - 1) + "\nBurh, whatever."
+            };
+            return reactions[(int)(Math.random() * reactions.length)];
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -93,8 +118,12 @@ public class TaskList {
     public String uncompleteTask(int i) {
         try {
             tasks.get(i - 1).uncomplete();
-            return "Burh, seriously?"
-                    + "    " + tasks.get(i - 1);
+            String[] reactions = {
+                "Burh... of course you're unmarking it. Why am I not surprised?\n" + "    " + tasks.get(i - 1) + "\nBurh, typical.",
+                "*sigh* Burh, unmarked. Not like I expected any better.\n" + "    " + tasks.get(i - 1) + "\nBurh, why do I even bother?",
+                "Burh... shocking. You couldn't even keep a task completed.\n" + "    " + tasks.get(i - 1) + "\nBurh, I'm not even mad, just disappointed."
+            };
+            return reactions[(int)(Math.random() * reactions.length)];
         } catch (IndexOutOfBoundsException e) {
             throw new BurhException("Invalid index");
         }
@@ -106,11 +135,21 @@ public class TaskList {
      * @return List of all task in string.
      */
     public String orderedPrint() {
-        StringBuilder all = new StringBuilder();
-        for (int i = 0; i < this.tasks.size(); i++) {
-            all.append(i + 1).append(". ").append(this.tasks.get(i)).append("\n");
+        if (tasks.isEmpty()) {
+            return "Burh... your list is empty. Must be nice having no responsibilities.\nBurh, must be nice.";
         }
-        return all.toString();
+        
+        String[] intros = {
+            "Burh... *sigh* Here are your " + tasks.size() + " tasks. Not that you'll do them.\n",
+            "Burh, you want me to list all " + tasks.size() + " tasks? Fine. But make it quick.\n",
+            "Burh, " + tasks.size() + " tasks you're probably going to ignore. Here:\n"
+        };
+        
+        StringBuilder s = new StringBuilder(intros[(int)(Math.random() * intros.length)]);
+        for (int i = 0; i < tasks.size(); i++) {
+            s.append(i + 1).append(". ").append(tasks.get(i).toString()).append("\n");
+        }
+        return s.toString().trim();
     }
 
     /**

@@ -21,8 +21,8 @@ public class Ui {
      * @return Welcome string.
      */
     public String showWelcome() {
-        return "Bello! I'm Burh"
-        + "\nWhat can I do for you?";
+        return "Burh... what now?"
+                + "\nUgh, fine. I'm Bruh. What do you want, burh? Make it quick.";
     }
 
     /**
@@ -31,7 +31,13 @@ public class Ui {
      * @return Goodbye string.
      */
     public String showGoodbye() {
-        return "Burh, goodbye!";
+        String[] goodbyes = {
+            "Burh, finally. Don't come back.",
+            "Ugh, about time, burh. Go away.",
+            "*sigh* Later, burh. Not that I care.",
+            "Burh... whatever. I was getting tired of you anyway."
+        };
+        return goodbyes[(int)(Math.random() * goodbyes.length)];
     }
 
     /**
@@ -47,7 +53,12 @@ public class Ui {
      * @param message The error message to display.
      */
     public void showError(String message) {
-        System.out.println(" " + message);
+        String[] errorReactions = {
+            "Burh... *sigh* " + message,
+            "Burh, really? " + message,
+            "Burh, I don't have time for this. " + message
+        };
+        System.out.println(errorReactions[(int)(Math.random() * errorReactions.length)]);
     }
 
     /**
