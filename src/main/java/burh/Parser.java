@@ -1,5 +1,6 @@
 package burh;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,8 +12,8 @@ import java.util.regex.Pattern;
 public class Parser {
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("^\\s+|\\s+$");
     private static final Pattern MULTIPLE_SPACES_PATTERN = Pattern.compile("\\s+");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     /**
@@ -133,8 +134,8 @@ public class Parser {
 
         // Validate date range
         try {
-            LocalDateTime start = LocalDateTime.parse(from, DATE_TIME_FORMATTER);
-            LocalDateTime end = LocalDateTime.parse(to, DATE_TIME_FORMATTER);
+            LocalDateTime start = LocalDate.parse(from, DATE_FORMATTER).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(to, DATE_FORMATTER).atStartOfDay();
 
             if (!end.isAfter(start)) {
                 throw new BurhException(BurhException.ErrorType.INVALID_DATE_RANGE);
@@ -182,12 +183,12 @@ public class Parser {
      * @param dateTime The date-time string to validate.
      * @throws BurhException If the format is invalid.
      */
-    private static void validateDateTime(String dateTime) throws BurhException {
+    private static void validateDateTime(String date) throws BurhException {
         try {
-            LocalDateTime.parse(dateTime, DATE_TIME_FORMATTER);
+            LocalDateTime.parse(date + "T00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         } catch (DateTimeParseException e) {
             throw new BurhException(BurhException.ErrorType.INVALID_DATE_FORMAT,
-                    "Please use the format: yyyy-MM-dd HHmm (e.g., 2023-12-31 2359)");
+                    "Please use the format: yyyy-MM-dd (e.g., 2023-12-31)");
         }
     }
 

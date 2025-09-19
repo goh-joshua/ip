@@ -12,9 +12,9 @@ public class BurhException extends RuntimeException {
         MISSING_INDEX("Burh, you need to specify a task number."),
         FILE_ERROR("Burh, I had trouble accessing the save file."),
         CORRUPTED_DATA("Burh, the save file is corrupted."),
-        INVALID_DATE_FORMAT("Burh, use a valid date format (yyyy-MM-dd HHmm)."),
-        INVALID_EVENT_FORMAT("Burh, use: event <description> /from <start> /to <end>"),
-        INVALID_DEADLINE_FORMAT("Burh, use: deadline <description> /by <date>"),
+        INVALID_DATE_FORMAT("Burh, use a valid date format (yyyy-MM-dd)."),
+        INVALID_EVENT_FORMAT("Burh, use: event <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>"),
+        INVALID_DEADLINE_FORMAT("Burh, use: deadline <description> /by <yyyy-MM-dd>"),
         INVALID_DATE_RANGE("Burh, the end date must be after the start date."),
         DUPLICATE_TASK("Burh, you already have this task."),
         UNKNOWN_ERROR("Burh, something went wrong.");

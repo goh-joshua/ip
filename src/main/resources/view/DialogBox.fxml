@@ -25,8 +25,8 @@
                    alignment="CENTER_LEFT"/>
         </VBox>
         <ImageView fx:id="displayPicture" 
-                  fitHeight="60.0" 
-                  fitWidth="60.0" 
+                  fitHeight="100.0"
+                  fitWidth="100.0"
                   pickOnBounds="true" 
                   preserveRatio="true"
                   styleClass="display-picture"
