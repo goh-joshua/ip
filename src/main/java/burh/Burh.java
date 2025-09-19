@@ -44,29 +44,29 @@ public class Burh {
                 case BYE: {
                     // Save data before exiting
                     try {
-                        storage.save(tasks.getStringList());
-                    } catch (IOException e) {
+                        storage.save(tasks);
+                    } catch (BurhException e) {
                         ui.showError("Error saving data: " + e.getMessage());
                     }
                     return ui.showGoodbye();
                 }
 
                 case LIST: {
-                    return tasks.orderedPrint();
+                    return tasks.listTasks();
                 }
 
                 case MARK: {
-                    int taskIndex = Parser.parseIndex(input);
+                    int taskIndex = Parser.parseIndex(input, tasks.size());
                     return tasks.completeTask(taskIndex);
                 }
 
                 case UNMARK: {
-                    int taskIndex = Parser.parseIndex(input);
+                    int taskIndex = Parser.parseIndex(input, tasks.size());
                     return tasks.uncompleteTask(taskIndex);
                 }
 
                 case DELETE: {
-                    int taskIndex = Parser.parseIndex(input);
+                    int taskIndex = Parser.parseIndex(input, tasks.size());
                     return tasks.deleteTask(taskIndex);
                 }
 
@@ -86,7 +86,7 @@ public class Burh {
                 }
 
                 case FIND: {
-                    return tasks.findKeywordInTasks(Parser.parseKeyword(input));
+                    return tasks.findKeywordInTasks(Parser.parseFindKeyword(input));
                 }
 
                 case SORT: {

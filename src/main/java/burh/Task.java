@@ -59,6 +59,15 @@ abstract public class Task implements Comparable<Task> {
         return (isCompleted) ? "T|" : "F|";
     }
 
+    /**
+     * Checks if the task is completed.
+     *
+     * @return true if the task is completed, false otherwise.
+     */
+    public boolean isDone() {
+        return isCompleted;
+    }
+
     @Override
     public abstract int compareTo(Task t);
 

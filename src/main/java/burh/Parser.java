@@ -1,114 +1,207 @@
 package burh;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
+
 /**
  * Parses user input strings into commands or task objects.
  */
 public class Parser {
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("^\\s+|\\s+$");
+    private static final Pattern MULTIPLE_SPACES_PATTERN = Pattern.compile("\\s+");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
 
     /**
      * Returns the Command corresponding to the first word of the input.
      *
-     * @param s User input string.
+     * @param input User input string.
      * @return The parsed Command enum.
-     * @throws BurhException If the command is not recognized.
+     * @throws BurhException If the command is not recognized or input is empty.
      */
-    public static Command getCommand(String s) {
+    public static Command getCommand(String input) throws BurhException {
+        if (input == null || input.trim().isEmpty()) {
+            throw new BurhException(BurhException.ErrorType.INVALID_COMMAND);
+        }
+
+        String normalizedInput = normalizeInput(input);
+        String commandWord = normalizedInput.split("\\s+")[0].toUpperCase();
+
         try {
-            return Command.valueOf(s.split(" ")[0].toUpperCase());
+            return Command.valueOf(commandWord);
         } catch (IllegalArgumentException e) {
-            throw new BurhException("I do not understand your command");
+            throw new BurhException(BurhException.ErrorType.INVALID_COMMAND,
+                    "Try: todo, deadline, event, list, mark, unmark, delete, find, or bye");
         }
     }
 
     /**
-     * Returns an integer representing the index of a task in the task list.
+     * Parses and validates a task index from the command.
      *
-     * @param fullCommand Full user command starting with "mark" or "unmark".
-     * @return An integer.
-     * @throws BurhException If parsing fails.
+     * @param fullCommand The full command string (e.g., "mark 1", "delete 2").
+     * @param maxIndex The maximum valid index.
+     * @return The parsed 1-based index.
+     * @throws BurhException If the index is missing, invalid, or out of range.
      */
-    public static int parseIndex(String fullCommand) throws BurhException {
-        String[] commandParts = fullCommand.split("\\s+");
+    public static int parseIndex(String fullCommand, int maxIndex) throws BurhException {
+        String[] commandParts = fullCommand.split("\\s+", 2);
 
-        if (commandParts.length != 2) {
-            throw new BurhException("Burh..., give a proper index...");
+        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+            throw new BurhException(BurhException.ErrorType.MISSING_INDEX);
         }
 
         try {
-            return Integer.parseInt(commandParts[1]);
+            int index = Integer.parseInt(commandParts[1].trim());
+            if (index < 1 || index > maxIndex) {
+                throw new BurhException(BurhException.ErrorType.INVALID_INDEX,
+                        String.format("Valid range is 1 to %d", maxIndex));
+            }
+            return index;
         } catch (NumberFormatException e) {
-            throw new BurhException("Burh..., give a proper index...");
+            throw new BurhException(BurhException.ErrorType.INVALID_INDEX,
+                    "Please enter a valid number");
         }
     }
 
     /**
-     * Returns a Todo task parsed from the full command string.
+     * Parses a Todo task from the command string.
      *
-     * @param fullCommand Full user command starting with "todo".
-     * @return A Todo task object.
-     * @throws BurhException If parsing fails.
+     * @param fullCommand The full command string starting with "todo".
+     * @return A new Todo task.
+     * @throws BurhException If the description is empty or contains only whitespace.
      */
     public static Task parseTodoTask(String fullCommand) throws BurhException {
-
-        return new Todo(fullCommand.replaceFirst("todo ", ""));
+        String description = fullCommand.replaceFirst("^\\s*todo\\s+", "").trim();
+        validateDescription(description, "todo");
+        return new Todo(description);
     }
 
     /**
-     * Returns a Deadline task parsed from the full command string.
+     * Parses a Deadline task from the command string.
      *
-     * @param fullCommand Full user command starting with "deadline" and containing "/by".
-     * @return A Deadline task object.
-     * @throws BurhException If parsing fails.
+     * @param fullCommand The full command string starting with "deadline".
+     * @return A new Deadline task.
+     * @throws BurhException If the format is invalid, description is empty, or date is invalid.
      */
     public static Task parseDeadlineTask(String fullCommand) throws BurhException {
-        String[] parts = fullCommand.split(" /by ");
+        String[] parts = fullCommand.split("\\s+/by\\s+", 2);
 
         if (parts.length != 2) {
-            throw new BurhException("Burh, use the format: deadline <description> /by <date>");
+            throw new BurhException(BurhException.ErrorType.INVALID_DEADLINE_FORMAT);
         }
 
-        return new Deadline(parts[0].replaceFirst("deadline ", ""), parts[1]);
+        String description = parts[0].replaceFirst("^\\s*deadline\\s+", "").trim();
+        validateDescription(description, "deadline");
+
+        String by = parts[1].trim();
+        validateDateTime(by);
+
+        return new Deadline(description, by);
     }
 
     /**
-     * Returns a Event task parsed from the full command string.
+     * Parses an Event task from the command string.
      *
-     * @param fullCommand Full user command starting with "event", containing "/from" and "/to".
-     * @return A Event task object.
-     * @throws BurhException If parsing fails.
+     * @param fullCommand The full command string starting with "event".
+     * @return A new Event task.
+     * @throws BurhException If the format is invalid, description is empty, or dates are invalid.
      */
     public static Task parseEventTask(String fullCommand) throws BurhException {
-        String[] parts1 = fullCommand.split(" /from ");
-
-        if (parts1.length != 2) {
-            throw new BurhException("Burh, use the format: event <description> /from <start> /to <end>");
+        // Split into description and date parts
+        String[] parts = fullCommand.split("\\s+/from\\s+", 2);
+        if (parts.length != 2) {
+            throw new BurhException(BurhException.ErrorType.INVALID_EVENT_FORMAT);
         }
 
-        String[] parts2 = parts1[1].split(" /to ");
+        String description = parts[0].replaceFirst("^\\s*event\\s+", "").trim();
+        validateDescription(description, "event");
 
-        if (parts2.length != 2) {
-            throw new BurhException("Burh, use the format: event <description> /from <start> /to <end>");
+        // Split date range
+        String[] dateParts = parts[1].split("\\s+/to\\s+", 2);
+        if (dateParts.length != 2) {
+            throw new BurhException(BurhException.ErrorType.INVALID_EVENT_FORMAT);
         }
 
-        return new Event(parts1[0].replaceFirst("event ", ""), parts2[0], parts2[1]);
+        String from = dateParts[0].trim();
+        String to = dateParts[1].trim();
+
+        validateDateTime(from);
+        validateDateTime(to);
+
+        // Validate date range
+        try {
+            LocalDateTime start = LocalDateTime.parse(from, DATE_TIME_FORMATTER);
+            LocalDateTime end = LocalDateTime.parse(to, DATE_TIME_FORMATTER);
+
+            if (!end.isAfter(start)) {
+                throw new BurhException(BurhException.ErrorType.INVALID_DATE_RANGE);
+            }
+        } catch (DateTimeParseException e) {
+            throw new BurhException(BurhException.ErrorType.INVALID_DATE_FORMAT);
+        }
+
+        return new Event(description, from, to);
     }
 
     /**
-     * Parses a find command and returns the keyword the user wants to find.
+     * Parses the search keyword from a find command.
      *
-     * @param fullCommand the full command string entered by the user starting with "find".
-     * @return a String of the keyword.
-     * @throws BurhException if the command format is invalid
+     * @param fullCommand The full command string starting with "find".
+     * @return The search keyword.
+     * @throws BurhException If no search keyword is provided.
      */
-    public static String parseKeyword(String fullCommand) throws BurhException {
-        String[] parts = fullCommand.split(" ");
-
-        if (parts.length != 2) {
-            throw new BurhException("Burh. Enter 1 keyword. ");
+    public static String parseFindKeyword(String fullCommand) throws BurhException {
+        String keyword = fullCommand.replaceFirst("^\\s*find\\s+", "").trim();
+        if (keyword.isEmpty()) {
+            throw new BurhException(BurhException.ErrorType.MISSING_DESCRIPTION,
+                    "Please enter a search term");
         }
-
-        return parts[1];
+        return keyword;
     }
 
+    /**
+     * Validates that a task description is not empty.
+     *
+     * @param description The description to validate.
+     * @param commandType The type of command (for error messages).
+     * @throws BurhException If the description is empty.
+     */
+    private static void validateDescription(String description, String commandType) throws BurhException {
+        if (description.isEmpty()) {
+            throw new BurhException(BurhException.ErrorType.MISSING_DESCRIPTION,
+                    String.format("The description of a %s cannot be empty.", commandType));
+        }
+    }
 
+    /**
+     * Validates that a date-time string is in the correct format.
+     *
+     * @param dateTime The date-time string to validate.
+     * @throws BurhException If the format is invalid.
+     */
+    private static void validateDateTime(String dateTime) throws BurhException {
+        try {
+            LocalDateTime.parse(dateTime, DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new BurhException(BurhException.ErrorType.INVALID_DATE_FORMAT,
+                    "Please use the format: yyyy-MM-dd HHmm (e.g., 2023-12-31 2359)");
+        }
+    }
+
+    /**
+     * Normalizes input by removing extra whitespace.
+     *
+     * @param input The input string to normalize.
+     * @return The normalized string with single spaces between words and no leading/trailing spaces.
+     */
+    public static String normalizeInput(String input) {
+        if (input == null) {
+            return "";
+        }
+        // Remove leading/trailing whitespace and replace multiple spaces with single space
+        return input.trim().replaceAll("\\s+", " ");
+    }
 }
